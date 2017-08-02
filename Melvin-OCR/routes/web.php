@@ -160,6 +160,7 @@ Route::get('/wp_upload',function(){
     curl_close($curl);
     
     if($result && !$error){
+        print(json_decode($result, true)['id']);    
         print(json_decode($result, true)['guid']['raw']);    
     }else{
         print('upload failed');    
@@ -217,4 +218,34 @@ Route::get('/wooMelvin',function(){
 //    print_r($woocommerce->get('products'));
     $product = $woocommerce->get('products',['per_page'=>2]);
     dd($product);
+});
+
+Route::get('/delete',function(){
+   $url = 'http://127.0.0.1/wordpress';
+   $mediaId = '294';
+   $curl = curl_init($url."/wp-json/wp/v2/media/".$mediaId.'?force=true');
+   curl_setopt_array($curl, [
+   CURLOPT_HTTPHEADER => [
+                'Authorization: Basic amlhaG9uZzk2OkRsR2NtZXdVSWtVR2tlTFBHQ3hSNFV6NQ==',
+   ],
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_POST =>1,
+            CURLOPT_CUSTOMREQUEST => "DELETE",
+            CURLOPT_VERBOSE => 1,
+            CURLOPT_FOLLOWLOCATION => 1,
+        ]);
+
+        $result = curl_exec($curl);
+        $error = curl_error($curl);
+        curl_close($curl); 
+   
+    if($result && !$error){
+        dd(json_decode($result, true));    
+  
+    }else{
+        print('upload failed');    
+    }
 });

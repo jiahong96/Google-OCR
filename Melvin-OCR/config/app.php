@@ -13,7 +13,13 @@ return [
     */
 
     'name' => env('APP_NAME', 'Laravel'),
-
+    
+    'wp_url'=> env('WP_WEBSITE'),
+    'wp_pw'=> env('WP_PASSWORD'),
+    'wpe_pw'=> env('WPE_PASSWORD'),
+    'wc_key'=> env('WC_KEY'),
+    'wc_secret'=> env('WC_SECRET'),
+    
     /*
     |--------------------------------------------------------------------------
     | Application Environment
