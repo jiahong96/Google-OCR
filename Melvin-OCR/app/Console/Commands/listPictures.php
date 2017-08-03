@@ -237,6 +237,48 @@ class listPictures extends Command
         return $imageName." uploaded successfully";
     }
 
+    /**
+     * return id of product tag. either by reading existing or creating a new tag
+     * @param $tag
+     * @return integer
+     */
+    private function getTagId($tag) {
+        $slug = str_slug($tag);
+        $api = $this->getWoocommerceClient();
+
+        //try get id from existing
+        $result = $api->get('products/tags',['slug'=>$slug]);
+        if($result) {
+            return $result[0]['id'];
+        }
+
+        //get id by creating
+        $result = $api->post('products/tags', ['name'=>$tag,'slug'=>$slug ]);
+        return $result['id'];
+
+    }
+
+    /**
+     * return id of product category, either by reading existing or creating a new category
+     * @param $category
+     * @return integer
+     */
+    private function getCategoryId($category) {
+        $slug = str_slug($category);
+        $api = $this->getWoocommerceClient();
+
+        //try get id from existing
+        $result = $api->get('products/categories',['slug'=>$slug]);
+        if($result) {
+            return $result[0]['id'];
+        }
+
+        //get id by creating
+        $result = $api->post('products/categories', ['name'=>$category,'slug'=>$slug ]);
+        return $result['id'];
+
+    }
+
     private $wc_client = null;
 
     /**
