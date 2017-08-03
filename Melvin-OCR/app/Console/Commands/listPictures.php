@@ -11,7 +11,7 @@ class listPictures extends Command
      *
      * @var string
      */
-    protected $signature = 'list:pictures {user} {event} {folderPath}';
+    protected $signature = 'list:pictures {user : to be added to tag} {event : to be added to category} {folderPath : full path of image location}';
 
     /**
      * The console command description.
@@ -47,7 +47,7 @@ class listPictures extends Command
         $eventName = $this->argument('event');
         
         //$url = config('app.wp_url');
-        $projectId = 'melvin-ocr';
+        $projectId = config('app.gc_project_id');
         
         //glob search through image files
         $files = glob($path."\\*.{JPEG,JPG,PNG,jpeg,jpg,png}", GLOB_BRACE);
