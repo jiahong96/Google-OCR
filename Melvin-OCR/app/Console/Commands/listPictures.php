@@ -319,8 +319,17 @@ class listPictures extends Command
             $data = [
                 'name' => $eventName." #".$mediaId,
                 'type' => 'simple',
-                'regular_price' => '4.99 MYR',
+                'regular_price' => config('woocommerce.product.price'),
                 'description' => $description,
+                'downloadable' => true,
+                'download_limit' => config('woocommerce.product.download_limit',-1),
+                'category' => [ 'id' => $this->getCategoryId($eventName) ],
+                'tags' => [
+                    ['id' => $this->getTagId($user)]
+                ],
+                'downloads' => [
+                    ['name' => $imageName,'file' => $imageUrl]
+                ],
                 'images' => [
                     [
                         'name' => $imageName,
