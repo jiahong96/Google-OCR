@@ -45,7 +45,7 @@ class listPictures extends Command
         $path = $this->argument('folderPath');
         $user = $this->argument('user');
         $eventName = $this->argument('event');
-        
+
         //$url = config('app.wp_url');
         $projectId = config('app.gc_project_id');
 
@@ -73,7 +73,7 @@ class listPictures extends Command
         if (!$this->checkOCRFileExists($user,$currentDate,$imageName)) {
             // file doesn't exist
             // google cloud vision havent complete yet/failed
-            print('Google Cloud Vision for '.$imageName.' begins' .PHP_EOL);
+            echo 'Google Cloud Vision for '.$imageName.' ..';
             
             
             // [START text_detection]
@@ -90,13 +90,13 @@ class listPictures extends Command
             $description = array_filter($description);
             $desc = implode(' ', $description);
             if (!empty($description)) {
-                print($this->exportOCR($description,$user,$currentDate,$imageName) .PHP_EOL);
+                echo $this->exportOCR($description,$user,$currentDate,$imageName) ."\n\r";
             
                 //[START picture uploading]
                 $this->uploadImage($desc,$filePath,$user,$currentDate,$imageName);
             }
         }else{
-            print('Google Cloud Vision for '.$imageName.' has been completed' .PHP_EOL);
+            print('Google Cloud Vision for '.$imageName.' skipped.' .PHP_EOL);
             $jsonData = file_get_contents(public_path()."\\OCR\\".$user."\\".$currentDate. "\\" .$imageName.".txt");
             $jsonObj = json_decode($jsonData, true);
             //[START picture uploading]
@@ -151,7 +151,7 @@ class listPictures extends Command
           mkdir(public_path()."\\OCR\\".$user."\\".$currentDate, 0777, true);
         }
         file_put_contents(public_path()."\\OCR\\".$user."\\".$currentDate. "\\" .$imageName.".txt",$Obj);
-        return 'Google Cloud Vision for '.$imageName.' has succeeded';
+        return ' done.';
     }
     
     public function uploadImage($desc,$filePath,$user,$currentDate,$imageName)
@@ -161,7 +161,7 @@ class listPictures extends Command
         if (!$this->checkUploadFileExists($user,$currentDate,$imageName)) {
             // file doesn't exist
             // image uploading havent complete yet/failed
-            print('Image Uploading for '.$imageName.' begins' .PHP_EOL);
+            echo 'Image Uploading for '.$imageName.'..';
             
             // [START image uploading]
             $data = file_get_contents($filePath);
@@ -177,7 +177,7 @@ class listPictures extends Command
             }
             
         }else{
-            print 'Image Uploading for '.$imageName.' has been completed' .PHP_EOL;
+            print 'Image Uploading for '.$imageName.' skipped.' .PHP_EOL;
             $jsonData = file_get_contents(public_path()."\\Upload\\".$user."\\".$currentDate. "\\" .$imageName.".txt");
             $jsonObj = json_decode($jsonData, true);
             //[START product inserting]
@@ -234,7 +234,7 @@ class listPictures extends Command
             mkdir(public_path()."\\Upload\\".$user."\\".$currentDate, 0777, true);
         }
         file_put_contents(public_path()."\\Upload\\".$user."\\".$currentDate. "\\" .$imageName.".txt", $Obj);
-        return $imageName." uploaded successfully";
+        return " done.";
     }
 
     /**
@@ -310,7 +310,7 @@ class listPictures extends Command
         if (!$this->checkProductFileExists($user,$currentDate,$imageName)) {
             // file doesn't exist
             // product inserting havent complete yet/failed
-            print('Product Inserting for '.$imageName.' begins' .PHP_EOL);
+            echo 'Product Inserting for '.$imageName.' ..';
 
             //init woocommerce client
             $woocommerce = $this->getWoocommerceClient();
@@ -342,7 +342,7 @@ class listPictures extends Command
             $delete = $this->curlDeleteUpload($mediaId);
             print($this->exportProductResult($result,$user,$currentDate,$imageName) .PHP_EOL);
         }else{
-            print 'Product Inserting for '.$imageName.' has been completed' .PHP_EOL;
+            print 'Product Inserting for '.$imageName.' skipped.' .PHP_EOL;
         }
     }
     
@@ -386,7 +386,7 @@ class listPictures extends Command
             mkdir(public_path()."\\Product\\".$user."\\".$currentDate, 0777, true);
         }
         file_put_contents(public_path()."\\Product\\".$user."\\".$currentDate. "\\" .$imageName.".txt", $jsonResponse);
-        return $imageName." product inserted successfully";
+        return " done.";
     }
                           
 }
