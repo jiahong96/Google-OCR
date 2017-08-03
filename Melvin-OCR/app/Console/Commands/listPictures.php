@@ -236,7 +236,31 @@ class listPictures extends Command
         file_put_contents(public_path()."\\Upload\\".$user."\\".$currentDate. "\\" .$imageName.".txt", $Obj);
         return $imageName." uploaded successfully";
     }
-    
+
+    private $wc_client = null;
+
+    /**
+     * woocommerce client factory
+     *
+     * @return \Automattic\WooCommerce\Client|null
+     */
+    private function getWoocommerceClient() {
+        if( ! $this->wc_client) {
+
+            $this->wc_client = new \Automattic\WooCommerce\Client(
+                config('app.wp_url'),
+                config('app.wc_key'),
+                config('app.wc_secret'),
+                [
+                    'wp_api' => true,
+                    'version' => 'wc/v1',
+                ]
+            );
+        }
+
+        return $this->wc_client;
+    }
+
     public function insertProduct($mediaId,$imageUrl,$description,$user,$currentDate,$imageName)
     {
         $eventName = $this->argument('event');
@@ -248,8 +272,8 @@ class listPictures extends Command
 
             //init woocommerce client
             $woocommerce = new \Automattic\WooCommerce\Client(
-                config('app.wp_url'), 
-                config('app.wc_key'), 
+                config('app.wp_url'),
+                config('app.wc_key'),
                 config('app.wc_secret'),
                 [
                     'wp_api' => true,
