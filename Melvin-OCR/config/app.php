@@ -19,6 +19,7 @@ return [
     'wpe_pw'=> env('WPE_PASSWORD'),
     'wc_key'=> env('WC_KEY'),
     'wc_secret'=> env('WC_SECRET'),
+    'gc_project_id'=>env('GOOGLE_PROJECT_ID'),
     
     /*
     |--------------------------------------------------------------------------
