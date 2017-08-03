@@ -271,15 +271,7 @@ class listPictures extends Command
             print('Product Inserting for '.$imageName.' begins' .PHP_EOL);
 
             //init woocommerce client
-            $woocommerce = new \Automattic\WooCommerce\Client(
-                config('app.wp_url'),
-                config('app.wc_key'),
-                config('app.wc_secret'),
-                [
-                    'wp_api' => true,
-                    'version' => 'wc/v1',
-                ]
-            );
+            $woocommerce = $this->getWoocommerceClient();
     
             //init product data
             $data = [
