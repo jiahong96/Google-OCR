@@ -48,14 +48,14 @@ class listPictures extends Command
         
         //$url = config('app.wp_url');
         $projectId = config('app.gc_project_id');
-        
+
         //glob search through image files
         $files = glob($path."\\*.{JPEG,JPG,PNG,jpeg,jpg,png}", GLOB_BRACE);
-        
+
         foreach ($files as $key=>$filePath) {
-            $this->OCR($filePath,$projectId,$user);    
+            $this->OCR($filePath,$projectId,$user);
         }
-        
+
     }  
     
     public function OCR($filePath,$projectId,$user)
@@ -206,7 +206,7 @@ class listPictures extends Command
             CURLOPT_TIMEOUT => 30,
             CURLOPT_POST =>1,
             CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_VERBOSE => 1,
+            CURLOPT_VERBOSE => false,
             CURLOPT_FOLLOWLOCATION => 1,
             CURLOPT_POSTFIELDS => $data
         ]);
@@ -364,7 +364,7 @@ class listPictures extends Command
                 CURLOPT_TIMEOUT => 30,
                 CURLOPT_POST =>1,
                 CURLOPT_CUSTOMREQUEST => "DELETE",
-                CURLOPT_VERBOSE => 1,
+                CURLOPT_VERBOSE => false,
                 CURLOPT_FOLLOWLOCATION => 1,
             ]);
 
