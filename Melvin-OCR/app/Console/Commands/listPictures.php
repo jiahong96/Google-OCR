@@ -240,7 +240,7 @@ class listPictures extends Command
     /**
      * return id of product tag. either by reading existing or creating a new tag
      * @param $tag
-     * @return integer
+     * @return array
      */
     private function getTagId($tag) {
         $slug = str_slug($tag);
@@ -249,19 +249,19 @@ class listPictures extends Command
         //try get id from existing
         $result = $api->get('products/tags',['slug'=>$slug]);
         if($result) {
-            return $result[0]['id'];
+            return $result[0];
         }
 
         //get id by creating
         $result = $api->post('products/tags', ['name'=>$tag,'slug'=>$slug ]);
-        return $result['id'];
+        return $result;
 
     }
 
     /**
-     * return id of product category, either by reading existing or creating a new category
+     * return product category, either by reading existing or creating a new category
      * @param $category
-     * @return integer
+     * @return array
      */
     private function getCategoryId($category) {
         $slug = str_slug($category);
@@ -270,12 +270,12 @@ class listPictures extends Command
         //try get id from existing
         $result = $api->get('products/categories',['slug'=>$slug]);
         if($result) {
-            return $result[0]['id'];
+            return $result[0];
         }
 
         //get id by creating
         $result = $api->post('products/categories', ['name'=>$category,'slug'=>$slug ]);
-        return $result['id'];
+        return $result;
 
     }
 
@@ -323,10 +323,8 @@ class listPictures extends Command
                 'description' => $description,
                 'downloadable' => true,
                 'download_limit' => config('woocommerce.product.download_limit',-1),
-                'category' => [ 'id' => $this->getCategoryId($eventName) ],
-                'tags' => [
-                    ['id' => $this->getTagId($user)]
-                ],
+                'categories' => [ $this->getCategoryId($eventName) ],
+                'tags' => [ $this->getTagId($user) ],
                 'downloads' => [
                     ['name' => $imageName,'file' => $imageUrl]
                 ],
